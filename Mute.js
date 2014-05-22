@@ -66,7 +66,7 @@ System.addKeyBindingHandler('M'.charCodeAt(0), 1, function(id){
 
 	if(s == undefined)
 		return;
-	for (var i = 0,j = 0; i < MuteUser.length; ++i )
+	for (var i = 0,j = 0; i < MuteUser.length; i++ )
 	{
 		if(MuteUser[i] == s) 
 		{
@@ -74,7 +74,10 @@ System.addKeyBindingHandler('M'.charCodeAt(0), 1, function(id){
 		}
 		tmp[j++]=MuteUser[i];
 	}
-	MuteUser=tmp;
+	for (var i = 0,j = 0; i < tmp.length; i++ )
+	{
+		MuteUser[j++]=tmp[i];
+	}
 	delete MuteUser_hash[s];
 	System.showNotice(s + '를 뮤트하지 않습니다.');
 });
