@@ -1,5 +1,6 @@
 //by SinaMafuyu - SinaMafuyu@SinaMafuyu.net
 
+var MessageBox = true;			//뮤트 확인 대화상자 사용 여부.
 var MuteUser = [ ];
 var MuteUser_hash = { };
 
@@ -7,7 +8,6 @@ if(FileSystem.privateStore.exists('list.txt')){
 	var value = FileSystem.privateStore.read('list.txt');
 	if(value != ''){
 		MuteUser = value.split('\n');
-		MuteUser.sort();
 		for(var i = 0; i < MuteUser.length; ++i) MuteUser_hash[MuteUser] = 1;
 	}
 }
@@ -27,24 +27,34 @@ System.addKeyBindingHandler('M'.charCodeAt(0), 0, function(id){
 	if (!status) return;
 	var s = status.user.screen_name;
 	var tmp = [ ];
+	var yn = 0x06;
 	if(MuteUser_hash[s] == undefined){
-		MuteUser_hash[s] = 1;
-		MuteUser.push(s);
-		MuteUser.sort();
-		System.showNotice(s + '를 뮤트합니다.');
+		if(MessageBox)
+			yn=System.showMessage(s + "를 뮤트하시겠습니까?", "Mute Script - @SinaMafuyu", 0x04 );
+		if(yn==0x06){
+			MuteUser_hash[s] = 1;
+			MuteUser.push(s);
+			MuteUser.sort();
+			System.showNotice(s + '를 뮤트합니다.');
+		}
 	}
 	else {
-		for (var i = 0,j = 0; i < MuteUser.length; ++i )
+		if(MessageBox)
+			yn=System.showMessage(s + "를 뮤트하지 않겠습니까?", "Mute Script - @SinaMafuyu", 0x04 );
+		if(yn==0x06)
 		{
-			if(MuteUser[i] == s) 
+			for (var i = 0,j = 0; i < MuteUser.length; i++ )
 			{
-				continue;
+				if(MuteUser[i] == s) 
+				{
+					continue;
+				}
+				tmp[j++]=MuteUser[i];
 			}
-			tmp[j++]=MuteUser[i];
+			MuteUser=tmp;
+			delete MuteUser_hash[s];
+			System.showNotice(s + '를 뮤트하지 않습니다.');
 		}
-		MuteUser=tmp;
-		delete MuteUser_hash[s];
-		System.showNotice(s + '를 뮤트하지 않습니다.');
 	}
 });
 
@@ -66,7 +76,7 @@ System.addKeyBindingHandler('M'.charCodeAt(0), 1, function(id){
 
 	if(s == undefined)
 		return;
-	for (var i = 0,j = 0; i < MuteUser.length; i++ )
+	for (var i = 0,j = 0; i < MuteUser.length; ++i )
 	{
 		if(MuteUser[i] == s) 
 		{
@@ -74,10 +84,7 @@ System.addKeyBindingHandler('M'.charCodeAt(0), 1, function(id){
 		}
 		tmp[j++]=MuteUser[i];
 	}
-	for (var i = 0,j = 0; i < tmp.length; i++ )
-	{
-		MuteUser[j++]=tmp[i];
-	}
+	MuteUser=tmp;
 	delete MuteUser_hash[s];
 	System.showNotice(s + '를 뮤트하지 않습니다.');
 });
