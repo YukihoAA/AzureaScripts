@@ -1,7 +1,7 @@
 To Install
 =============
-Azurea 클라이언트 폴더 내 Scripts 폴더에 사용하실 .js 파일을 넣으신 뒤,
-Azurea 우측 하단의 화살표 -> UI 설정에서 Script 확장 사용에 체크해주시고
+Azurea 클라이언트 폴더 내 Scripts 폴더에 사용하실 .js 파일을 넣으신 뒤, <br/>
+Azurea 우측 하단의 화살표 -&gt; UI 설정에서 Script 확장 사용에 체크해주시고 <br/>
 재시작 하시면 됩니다.
 
 
