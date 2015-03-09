@@ -4,6 +4,7 @@ Mute.js
 M키로 해당 유저 뮤트 On/Off <br/>
 Ctrl+M으로 아이디로 뮤트 <br/>
 Shift+M으로 아이디로 뮤트 해제 <br/>
+Mute.js 내 MessageBox 변수 true/false로 뮤트 확인 메시지 박스 On/Off <br/>
 
 
 FilteringRetweets.js
