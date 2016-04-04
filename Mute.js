@@ -104,5 +104,11 @@ TwitterService.addEventListener("preFilterProcessTimelineStatus",function(status
 		if(v)
 			return true;
 	}
+	else if(MuteUser.indexOf(status.retweeted_by) != -1)
+	{
+		var v=System.views.getView(0, null).getItem(status.id);
+		if(v)
+			return true;
+	}
 	return false;
 });
