@@ -4,6 +4,8 @@ var MessageBox = true;			//뮤트 확인 대화상자 사용 여부.
 var MuteUser = [ ];
 var MuteUser_hash = { };
 
+var modify = eval(System.settings.getValue('user.Fillter', 'Mmodify'));
+
 if(FileSystem.privateStore.exists('list.txt')){
 	var value = FileSystem.privateStore.read('list.txt');
 	if(value != ''){
@@ -89,6 +91,30 @@ System.addKeyBindingHandler('M'.charCodeAt(0), 1, function(id){
 	System.showNotice(s + '를 뮤트하지 않습니다.');
 });
 
+System.addKeyBindingHandler('M'.charCodeAt(0), 4, function(id){
+	if (modify == 0 | !modify)
+	{
+		System.settings.setValue('user.Fillter', 'Mmodify', 1);
+		System.settings.reconfigure();
+		System.showNotice('나에게 한 멘션을 제외한 트윗을 뮤트합니다.');
+		modify = 1;
+	}
+	else if (modify == 1)
+	{
+		System.settings.setValue('user.Fillter', 'Mmodify', 2);
+		System.settings.reconfigure();
+		System.showNotice('모든 트윗을 뮤트합니다.');
+		modify = 2;
+	}
+	else
+	{
+		System.settings.setValue('user.Fillter', 'Mmodify', 0);
+		System.settings.reconfigure();
+		System.showNotice('모든 트윗을 뮤트하지 않습니다');
+		modify = 0;
+	}
+});
+
 Array.prototype.indexOf = function(s)
 {
 	for (var i = 0; i < this.length; ++i )
@@ -98,7 +124,13 @@ Array.prototype.indexOf = function(s)
 };
 
 TwitterService.addEventListener("preFilterProcessTimelineStatus",function(status) {
-	if(MuteUser.indexOf(status.user.screen_name) != -1)
+	var myid = TwitterService.currentUser.id;
+	var mysn = TwitterService.currentUser.screen_name;
+	if(modify == 0)
+		return false;
+	else if(modify == 1 && (status.in_reply_to_status_id == myid || status.text.indexOf(mysn) >= 0))
+		return false;
+	else if(MuteUser.indexOf(status.user.screen_name) != -1)
 	{
 		var v=System.views.getView(0, null).getItem(status.id);
 		if(v)
