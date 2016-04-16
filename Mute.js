@@ -103,8 +103,15 @@ System.addKeyBindingHandler('M'.charCodeAt(0), 4, function(id){
 	{
 		System.settings.setValue('user.Fillter', 'Mmodify', 2);
 		System.settings.reconfigure();
-		System.showNotice('모든 트윗을 뮤트합니다.');
+		System.showNotice('뮤트 대상의 모든 트윗을 뮤트합니다.');
 		modify = 2;
+	}
+	else if (modify == 2)
+	{
+		System.settings.setValue('user.Fillter', 'Mmodify', 3);
+		System.settings.reconfigure();
+		System.showNotice('뮤트 대상의 모든 트윗과 대상에게 하는 멘션을 뮤트합니다.');
+		modify = 3;
 	}
 	else
 	{
@@ -121,6 +128,14 @@ Array.prototype.indexOf = function(s)
 		if(this[i] == s) return i;
 
 	return -1;
+};
+
+Array.prototype.indexOfs = function(s)
+{
+	for (var i = 0; i < this.length; ++i )
+		if(s.indexOf(this[i]) >=0 ) return true;
+
+	return false;
 };
 
 TwitterService.addEventListener("preFilterProcessTimelineStatus",function(status) {
@@ -142,5 +157,7 @@ TwitterService.addEventListener("preFilterProcessTimelineStatus",function(status
 		if(v)
 			return true;
 	}
+	else if(modify == 3)
+		return MuteUser.indexOfs(status.text);
 	return false;
 });
