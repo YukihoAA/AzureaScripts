@@ -2,11 +2,11 @@
 
 var MessageBox = true;			//뮤트 확인 대화상자 사용 여부.
 var MuteUser = [ ];
+var mysn = TwitterService.currentUser.screen_name;
 
 var mode = eval(System.settings.getValue('user.Fillter', 'Mmode'));
 
 var preFilerFunc = function(status) {
-	var mysn = TwitterService.currentUser.screen_name;
 	if(mode == 0)
 		return false;
 	else if(status.user.screen_name == mysn)
